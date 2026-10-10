@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0e0713">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Team Horizon</title>
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" type="image/png" sizes="48x48" href="/assets/icons/favicon-48.png">
+  <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Horizon">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&display=swap">
+  <link rel="stylesheet" href="./src/styles.css">
+</head>
+<body>
+
+  <!-- Accesso -->
+  <section id="login-view" class="login hidden">
+    <div class="login-sky" aria-hidden="true"></div>
+    <div class="login-inner">
+      <img class="brand-mark" src="./assets/team-horizon.jpg" alt="Team Horizon">
+      <div class="horizon" aria-hidden="true"></div>
+      <form id="login-form" class="login-form" method="post" action="/api/login" autocomplete="on" novalidate>
+        <h1>Accedi al tuo spazio</h1>
+        <p class="lede">Ogni venditore lavora sulla propria board Trello e sul proprio calendario.</p>
+        <label class="field">
+          <span>Nome utente</span>
+          <input id="login-user" name="username" autocomplete="username" autocapitalize="none" spellcheck="false" required>
+        </label>
+        <label class="field">
+          <span>Password</span>
+          <input id="login-pass" name="password" type="password" autocomplete="current-password" required>
+        </label>
+        <p id="login-error" class="form-error" role="alert"></p>
+        <button type="submit" id="login-submit" class="btn btn-primary btn-block">Accedi</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Barra superiore -->
+  <header id="topbar" class="topbar hidden">
+    <button id="go-home" class="brand-btn" type="button" aria-label="Torna alla home">
+      <img src="./assets/team-horizon.jpg" alt="">
+    </button>
+    <nav class="main-nav" aria-label="Sezioni">
+      <button type="button" data-section="history">Storico</button>
+      <button type="button" data-section="update">Aggiorna</button>
+      <button type="button" data-section="batch">Liste</button>
+      <button type="button" data-section="renewal">Rinnovi</button>
+    </nav>
+    <div class="who">
+      <span id="seller-name"></span>
+      <button id="logout" type="button" class="btn btn-ghost btn-sm">Esci</button>
+    </div>
+  </header>
+
+  <main id="app" class="shell hidden">
+
+    <!-- Home -->
+    <section id="home-view" class="home">
+      <h1 id="greeting">Ciao</h1>
+      <p id="today" class="lede"></p>
+      <div class="home-actions">
+        <button type="button" class="home-action" data-section="history">
+          <span class="ha-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg></span>
+          <span class="ha-title">Storico clienti</span>
+          <span class="ha-desc">Cerca una scheda e rileggi tutti i commenti.</span>
+        </button>
+        <button type="button" class="home-action" data-section="update">
+          <span class="ha-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/><path d="m13.5 6.5 4 4"/></svg></span>
+          <span class="ha-title">Aggiorna cliente</span>
+          <span class="ha-desc">Dopo una chiamata o un cambiamento: registra esito, appuntamento ed etichette.</span>
+        </button>
+        <button type="button" class="home-action" data-section="batch">
+          <span class="ha-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11"/><path d="m3.5 6 1.2 1.2L7 4.8M3.5 12l1.2 1.2L7 10.8"/><circle cx="5" cy="18" r="1.4"/></svg></span>
+          <span class="ha-title">Ricerca per lista</span>
+          <span class="ha-desc">Scegli più clienti di una lista e calendarizzali uno dopo l’altro.</span>
+        </button>
+        <button type="button" class="home-action" data-section="renewal">
+          <span class="ha-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 11a8 8 0 0 0-14.6-4.5L4 8"/><path d="M4 3v5h5"/><path d="M4 13a8 8 0 0 0 14.6 4.5L20 16"/><path d="M20 21v-5h-5"/></svg></span>
+          <span class="ha-title">Rinnova esclusive</span>
+          <span class="ha-desc">Controlla i reminder e decidi cosa rinnovare.</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Storico -->
+    <section id="section-history" class="section hidden">
+      <header class="section-head">
+        <div>
+          <h1>Storico clienti</h1>
+          <p class="lede">Cerca per nome, azienda o città.</p>
+        </div>
+      </header>
+      <div class="panel">
+        <div class="search-row">
+          <input id="history-search" type="search" placeholder="Es. Rossi, Bari" enterkeyhint="search">
+          <button id="history-search-button" type="button" class="btn btn-primary">Cerca</button>
+        </div>
+        <div id="history-results"></div>
+      </div>
+      <div id="history-detail"></div>
+    </section>
+
+    <!-- Aggiorna -->
+    <section id="section-update" class="section hidden">
+      <header class="section-head">
+        <div>
+          <h1>Aggiorna cliente</h1>
+          <p class="lede">Un cliente alla volta, dopo una chiamata o un cambiamento.</p>
+        </div>
+      </header>
+      <ol id="stepper" class="stepper" aria-label="Passaggi"></ol>
+      <div id="update-content" class="panel"></div>
+    </section>
+
+    <!-- Ricerca per lista -->
+    <section id="section-batch" class="section hidden">
+      <header class="section-head">
+        <div>
+          <h1>Ricerca per lista</h1>
+          <p class="lede">Seleziona i clienti di una lista e aggiornali in sequenza, con il calendario sempre a portata.</p>
+        </div>
+      </header>
+      <div id="batch-picker"></div>
+      <div id="batch-run" class="hidden">
+        <div id="batch-progress" class="queue-bar"></div>
+        <ol id="batch-stepper" class="stepper" aria-label="Passaggi"></ol>
+        <div id="batch-content" class="panel"></div>
+      </div>
+    </section>
+
+    <!-- Rinnovi -->
+    <section id="section-renewal" class="section hidden">
+      <header class="section-head">
+        <div>
+          <h1>Rinnova esclusive</h1>
+          <p id="renewal-sub" class="lede">Reminder della lista rinnovi, abbinati alla scheda originale.</p>
+        </div>
+        <button id="load-renewals" type="button" class="btn">Aggiorna elenco</button>
+      </header>
+      <div id="renewal-summary" class="stat-strip"></div>
+      <div id="renewal-groups"></div>
+    </section>
+  </main>
+
+  <div id="modal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <button id="close-modal" type="button" class="icon-btn" aria-label="Chiudi">×</button>
+      <div id="modal-content"></div>
+    </div>
+  </div>
+
+  <div id="dialog" class="dialog hidden" role="alertdialog" aria-modal="true" aria-labelledby="dialog-title"></div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script type="module" src="./src/main.js"></script>
+  <script>
+    // App installabile sul telefono (PWA)
+    if ('serviceWorker' in navigator) {
+      addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
+    }
+  </script>
+</body>
+</html>
